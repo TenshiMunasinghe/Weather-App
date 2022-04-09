@@ -1,119 +1,43 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
+  import { ref } from '@vue/reactivity'
+  import useSWRV from 'swrv'
+  import { onMounted, watch } from 'vue'
+
+  const location = ref<{ lat: number; lon: number } | null>(null) // location of Nagoya
+  const { data, error } = useSWRV(
+    () =>
+      location.value &&
+      `https://api.openweathermap.org/data/2.5/weather?lat=${
+        location.value.lat
+      }&lon=${location.value.lon}&appid=${import.meta.env.VITE_API_KEY}`,
+    async key => {
+      return await (await fetch(key)).json()
+    }
+  )
+
+  watch([data], () => {
+    console.log(data.value.weather || 'loading')
+  })
+
+  onMounted(() => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        location.value = { lat: coords.latitude, lon: coords.longitude }
+      },
+      error => (location.value = { lat: 35.2, lon: 136.9 })
+    )
+  })
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div class="py-12 px-24">
+    <ul v-if="data">
+      <li v-for="weather in data.weather">
+        <h3>{{ weather.main }}</h3>
+        <p>{{ weather.description }}</p>
+        <img :src="`http://openweathermap.org/img/w/${weather.icon}.png`" />
+      </li>
+    </ul>
+    <div v-else>Loading...</div>
+  </div>
 </template>
-
-<style>
-@import '@/assets/base.css';
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
-}
-
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
