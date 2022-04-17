@@ -1,13 +1,15 @@
 <script setup lang="ts">
-  import { ref } from '@vue/reactivity'
+  import { computed, ref } from '@vue/reactivity'
+  import _ from 'lodash'
   import useSWRV from 'swrv'
-  import { onMounted, watch } from 'vue'
+  import { onMounted } from 'vue'
+  import Day from './components/Day.vue'
 
-  const location = ref<{ lat: number; lon: number } | null>(null) // location of Nagoya
+  const location = ref<{ lat: number; lon: number } | null>(null)
   const { data, error } = useSWRV(
     () =>
       location.value &&
-      `https://api.openweathermap.org/data/2.5/weather?lat=${
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${
         location.value.lat
       }&lon=${location.value.lon}&appid=${import.meta.env.VITE_API_KEY}`,
     async key => {
@@ -15,8 +17,21 @@
     }
   )
 
-  watch([data], () => {
-    console.log(data.value.weather || 'loading')
+  const days = computed(() => {
+    const formattedData = data.value?.list.map((weather: any) => ({
+      ...weather,
+      date: weather.dt_txt.split(' ')[0],
+      time: weather.dt_txt.split(' ')[1],
+    }))
+
+    const groupedData = _.groupBy(formattedData, 'date')
+
+    const sortedData = Object.entries(groupedData).map(([key, value]) => [
+      key,
+      value.sort((a, b) => a.dt - b.dt),
+    ])
+
+    return Object.fromEntries(sortedData)
   })
 
   onMounted(() => {
@@ -24,19 +39,23 @@
       ({ coords }) => {
         location.value = { lat: coords.latitude, lon: coords.longitude }
       },
-      error => (location.value = { lat: 35.2, lon: 136.9 })
+      error => {
+        console.error(error.message)
+        location.value = { lat: 35.2, lon: 136.9 }
+      }
     )
   })
 </script>
 
 <template>
-  <div class="py-12 px-24">
-    <ul v-if="data">
-      <li v-for="weather in data.weather">
-        <h3>{{ weather.main }}</h3>
-        <p>{{ weather.description }}</p>
-        <img :src="`http://openweathermap.org/img/w/${weather.icon}.png`" />
-      </li>
+  <div class="py-12 px-4">
+    <ul v-if="!!Object.keys(days)?.length" class="space-y-12">
+      <Day
+        v-for="(weathers, key) in days"
+        :weathers="weathers"
+        :key="key.toString()"
+        :label="key.toString()"
+      />
     </ul>
     <div v-else>Loading...</div>
   </div>
