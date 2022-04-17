@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { iconUrl } from '@/utils/iconUrl'
+  import { kelvinsToCelsius } from '../utils/kelvinsToCelsius'
   defineProps<{
     weathers: any[]
     label: string
@@ -20,7 +21,7 @@
           :alt="weather.weather[0].description"
         />
         <div v-if="typeof weather.main.temp === 'number'">
-          {{ Math.round(weather.main.temp - 273.15) }}&#x2103;
+          {{ kelvinsToCelsius(weather.main.temp) }}&#x2103;
         </div>
       </li>
     </ul>
