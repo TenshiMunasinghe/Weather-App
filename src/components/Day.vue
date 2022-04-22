@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { iconUrl } from '@/utils/iconUrl'
   import { kelvinsToCelsius } from '../utils/kelvinsToCelsius'
+  import WeatherIcon from './WeatherIcon.vue'
   defineProps<{
     weathers: any[]
     label: string
@@ -16,10 +16,7 @@
         class="bg-blue-900/50 rounded-sm p-4 whitespace-nowrap flex flex-col justify-center items-center"
       >
         <h4>{{ weather.time.substr(0, 5) }}</h4>
-        <img
-          :src="iconUrl(weather.weather[0].icon)"
-          :alt="weather.weather[0].description"
-        />
+        <WeatherIcon :icon-id="weather.weather[0].icon" />
         <div v-if="typeof weather.main.temp === 'number'">
           {{ kelvinsToCelsius(weather.main.temp) }}&#x2103;
         </div>
