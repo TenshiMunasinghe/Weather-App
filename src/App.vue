@@ -5,7 +5,6 @@
   import { onMounted } from 'vue'
   import CurrentWeather from './components/CurrentWeather.vue'
   import Day from './components/Day.vue'
-  import WeatherIcon from './components/WeatherIcon.vue'
 
   const location = ref<{ lat: number; lon: number } | null>(null)
   const { data, error } = useSWRV(
@@ -50,8 +49,7 @@
 </script>
 
 <template>
-  <div class="py-12 px-4">
-    <WeatherIcon />
+  <div class="py-12 px-4 space-y-8">
     <CurrentWeather v-if="location" :lat="location.lat" :lon="location.lon" />
     <ul v-if="!!Object.keys(days)?.length" class="space-y-12">
       <Day
