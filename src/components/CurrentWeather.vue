@@ -54,13 +54,13 @@
         {{ MONTHS[date.getMonth()] }}
       </div>
     </header>
-    <div class="flex flex-col space-y-8">
+    <div class="grid md:grid-cols-2 gap-6">
       <div
-        class="grid grid-cols-2 gap-x-6 place-items-center border-b-2 border-zinc-200/20 pb-6"
+        class="grid grid-cols-2 gap-x-6 justify-items-center border-b-2 md:border-b-0 md:border-r-2 md:pb-0 md:pr-6 border-zinc-200/20 pb-6"
       >
-        <WeatherIcon class="w-full h-full" :icon-id="weather.icon" />
-        <div class="space-y-4 w-full h-full">
-          <div class="w-full text-[length:18vw]">
+        <WeatherIcon class="w-full h-full mr-auto" :icon-id="weather.icon" />
+        <div class="space-y-4 w-min h-full">
+          <div class="w-min text-[length:min(18vw,5rem)]">
             {{ kelvinsToCelsius(data.main.temp) }}&#x2103;
           </div>
           <div class="text-lg capitalize">{{ weather.description }}</div>
