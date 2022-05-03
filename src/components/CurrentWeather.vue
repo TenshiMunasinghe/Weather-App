@@ -3,6 +3,7 @@
   import useSWRV from 'swrv'
   import { watch } from 'vue'
   import { kelvinsToCelsius } from '../utils/kelvinsToCelsius'
+  import Info from './Info.vue'
   import WeatherIcon from './WeatherIcon.vue'
 
   const WEEKDAY = [
@@ -53,13 +54,31 @@
         {{ MONTHS[date.getMonth()] }}
       </div>
     </header>
-    <div class="grid grid-cols-2 gap-x-6 place-items-center">
-      <WeatherIcon class="w-full h-full" :icon-id="weather.icon" />
-      <div class="space-y-4 w-full h-full">
-        <div class="w-full text-[length:18vw]">
-          {{ kelvinsToCelsius(data.main.temp) }}&#x2103;
+    <div class="flex flex-col space-y-8">
+      <div
+        class="grid grid-cols-2 gap-x-6 place-items-center border-b-2 border-zinc-200/20 pb-6"
+      >
+        <WeatherIcon class="w-full h-full" :icon-id="weather.icon" />
+        <div class="space-y-4 w-full h-full">
+          <div class="w-full text-[length:18vw]">
+            {{ kelvinsToCelsius(data.main.temp) }}&#x2103;
+          </div>
+          <div class="text-lg capitalize">{{ weather.description }}</div>
         </div>
-        <div class="text-lg capitalize">{{ weather.description }}</div>
+      </div>
+      <div class="grid gap-6 grid-cols-3 grid-rows-2">
+        <Info
+          :main="`${kelvinsToCelsius(data.main.temp_max)}&#x2103;`"
+          :sub="'high'"
+        />
+        <Info :main="`${data.wind.speed}mph`" :sub="'wind'" />
+        <Info :main="`${data.main.humidity}%`" :sub="'humidity'" />
+        <Info
+          :main="`${kelvinsToCelsius(data.main.temp_min)}&#x2103;`"
+          :sub="'low'"
+        />
+        <Info :main="`${data.wind.gust}mph`" :sub="'gust'" />
+        <Info :main="`${data.main.pressure}hpa`" :sub="'pressure'" />
       </div>
     </div>
   </section>
