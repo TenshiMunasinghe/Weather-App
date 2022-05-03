@@ -46,13 +46,13 @@
 
 <template>
   <section class="space-y-8" v-if="data">
-    <div>
+    <header>
       <h1 class="text-4xl">{{ data.name }}, {{ data.sys.country }}</h1>
       <div>
         {{ WEEKDAY[date.getDay()] }} {{ date.getDate() }}
         {{ MONTHS[date.getMonth()] }}
       </div>
-    </div>
+    </header>
     <div class="grid grid-cols-2 gap-x-6 place-items-center">
       <WeatherIcon class="w-full h-full" :icon-id="weather.icon" />
       <div class="space-y-4 w-full h-full">
