@@ -51,7 +51,7 @@
 <template>
   <div class="py-12 px-4 space-y-8">
     <CurrentWeather v-if="location" :lat="location.lat" :lon="location.lon" />
-    <ul v-if="!!Object.keys(days)?.length" class="space-y-12">
+    <ul v-if="!!Object.keys(days)?.length" class="space-y-12 max-w-7xl mx-auto">
       <Day
         v-for="(weathers, key) in days"
         :weathers="weathers"
