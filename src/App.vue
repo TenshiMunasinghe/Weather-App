@@ -49,16 +49,8 @@
 </script>
 
 <template>
-  <div class="py-12 px-4 space-y-20">
+  <div class="py-12 px-4 space-y-20 max-w-6xl mx-auto">
     <CurrentWeather v-if="location" :lat="location.lat" :lon="location.lon" />
-    <ul v-if="!!Object.keys(days)?.length" class="space-y-12 max-w-7xl mx-auto">
-      <Weathers
-        v-for="(weathers, key) in days"
-        :weathers="weathers"
-        :key="key.toString()"
-        :label="key.toString()"
-      />
-    </ul>
-    <div v-else>Loading...</div>
+    <Weathers :weathers="Object.values(days)[0]" :label="'Today\'s Weather'" />
   </div>
 </template>

@@ -43,7 +43,7 @@
 </script>
 
 <template>
-  <section class="space-y-8 max-w-6xl mx-auto" v-if="data">
+  <section class="space-y-8" v-if="data">
     <header>
       <h1 class="text-4xl">{{ data.name }}, {{ data.sys.country }}</h1>
       <div>
