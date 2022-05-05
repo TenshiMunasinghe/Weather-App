@@ -6,7 +6,7 @@
 
 <template>
   <li
-    class="bg-blue-900/50 rounded-sm py-4 px-6 whitespace-nowrap flex flex-col space-y-2 md:space-y-3 justify-center items-center"
+    class="bg-blue-900/40 rounded py-4 px-6 whitespace-nowrap flex flex-col space-y-2 md:space-y-3 justify-center items-center"
   >
     <h4>{{ weather.time.substr(0, 5) }}</h4>
     <WeatherIcon class="w-9 h-9" :icon-id="weather.weather[0].icon" />
