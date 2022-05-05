@@ -10,7 +10,7 @@
 <template>
   <li class="flex flex-col space-y-3">
     <h3 class="text-lg">{{ label.replaceAll('-', '/') }}</h3>
-    <ul class="flex overflow-x-auto space-x-3">
+    <ul class="grid grid-cols-4 gap-3">
       <li
         v-for="weather in weathers"
         class="bg-blue-900/50 rounded-sm py-4 px-6 whitespace-nowrap flex flex-col space-y-2 justify-center items-center"
