@@ -2,7 +2,6 @@
   import { computed } from '@vue/reactivity'
   import useSWRV from 'swrv'
   import { getTime } from '../utils/getTime'
-  import { kelvinsToCelsius } from '../utils/kelvinsToCelsius'
   import Info from './Info.vue'
   import WeatherIcon from './WeatherIcon.vue'
 
@@ -35,7 +34,7 @@
 
   const { lat, lon } = defineProps<{ lat: number; lon: number }>()
   const { data } = useSWRV(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${
+    `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&appid=${
       import.meta.env.VITE_API_KEY
     }`
   )
@@ -59,22 +58,16 @@
         <WeatherIcon class="w-full h-full mr-auto" :icon-id="weather.icon" />
         <div class="space-y-4 w-min h-full">
           <div class="w-min text-[length:min(18vw,5rem)]">
-            {{ kelvinsToCelsius(data.main.temp) }}&#x2103;
+            {{ parseInt(data.main.temp) }}&#x2103;
           </div>
           <div class="text-lg capitalize">{{ weather.description }}</div>
         </div>
       </div>
       <div class="grid gap-6 grid-cols-3 grid-rows-2">
-        <Info
-          :main="`${kelvinsToCelsius(data.main.temp_max)}&#x2103;`"
-          :sub="'high'"
-        />
+        <Info :main="`${parseInt(data.main.temp_max)}&#x2103;`" :sub="'high'" />
         <Info :main="`${data.wind.speed}mph`" :sub="'wind'" />
         <Info :main="getTime(data.sys.sunrise)" :sub="'sunrise'" />
-        <Info
-          :main="`${kelvinsToCelsius(data.main.temp_min)}&#x2103;`"
-          :sub="'low'"
-        />
+        <Info :main="`${parseInt(data.main.temp_min)}&#x2103;`" :sub="'low'" />
         <Info :main="`${data.main.humidity}%`" :sub="'humidity'" />
         <Info :main="getTime(data.sys.sunset)" :sub="'sunset'" />
       </div>
