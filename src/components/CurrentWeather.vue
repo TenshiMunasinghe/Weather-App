@@ -54,7 +54,7 @@
         {{ MONTHS[date.getMonth()] }}
       </div>
     </header>
-    <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2 gap-6 items-center">
       <div
         class="grid grid-cols-2 gap-x-6 justify-items-center border-b-2 md:border-b-0 md:border-r-2 md:pb-0 md:pr-6 border-zinc-200/20 pb-6"
       >
