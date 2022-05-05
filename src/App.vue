@@ -49,7 +49,7 @@
 </script>
 
 <template>
-  <div class="py-12 px-4 space-y-8">
+  <div class="py-12 px-4 space-y-20">
     <CurrentWeather v-if="location" :lat="location.lat" :lon="location.lon" />
     <ul v-if="!!Object.keys(days)?.length" class="space-y-12 max-w-7xl mx-auto">
       <Day
