@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed } from '@vue/reactivity'
   import useSWRV from 'swrv'
-  import { watch } from 'vue'
+  import { getTime } from '../utils/getTime'
   import { kelvinsToCelsius } from '../utils/kelvinsToCelsius'
   import Info from './Info.vue'
   import WeatherIcon from './WeatherIcon.vue'
@@ -41,8 +41,6 @@
   )
 
   const weather = computed(() => data.value.weather[0])
-
-  watch([data], () => console.log(data.value))
 </script>
 
 <template>
@@ -72,13 +70,13 @@
           :sub="'high'"
         />
         <Info :main="`${data.wind.speed}mph`" :sub="'wind'" />
-        <Info :main="`${data.main.humidity}%`" :sub="'humidity'" />
+        <Info :main="getTime(data.sys.sunrise)" :sub="'sunrise'" />
         <Info
           :main="`${kelvinsToCelsius(data.main.temp_min)}&#x2103;`"
           :sub="'low'"
         />
-        <Info :main="`${data.wind.gust}mph`" :sub="'gust'" />
-        <Info :main="`${data.main.pressure}hpa`" :sub="'pressure'" />
+        <Info :main="`${data.main.humidity}%`" :sub="'humidity'" />
+        <Info :main="getTime(data.sys.sunset)" :sub="'sunset'" />
       </div>
     </div>
   </section>
