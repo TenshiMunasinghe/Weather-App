@@ -4,7 +4,7 @@
   import useSWRV from 'swrv'
   import { onMounted } from 'vue'
   import CurrentWeather from './components/CurrentWeather.vue'
-  import Day from './components/Day.vue'
+  import Weathers from './components/Weathers.vue'
 
   const location = ref<{ lat: number; lon: number } | null>(null)
   const { data, error } = useSWRV(
@@ -52,7 +52,7 @@
   <div class="py-12 px-4 space-y-20">
     <CurrentWeather v-if="location" :lat="location.lat" :lon="location.lon" />
     <ul v-if="!!Object.keys(days)?.length" class="space-y-12 max-w-7xl mx-auto">
-      <Day
+      <Weathers
         v-for="(weathers, key) in days"
         :weathers="weathers"
         :key="key.toString()"
