@@ -34,9 +34,11 @@
 
   const { lat, lon } = defineProps<{ lat: number; lon: number }>()
   const { data } = useSWRV(
-    `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&appid=${
-      import.meta.env.VITE_API_KEY
-    }`
+    () => `/api/current?lat=${lat}&lon=${lon}`,
+    async key => {
+      const res = await fetch(key)
+      return await res.json()
+    }
   )
 
   const weather = computed(() => data.value.weather[0])

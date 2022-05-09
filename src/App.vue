@@ -1,6 +1,5 @@
 <script setup lang="ts">
-  import { computed, ref } from '@vue/reactivity'
-  import _ from 'lodash'
+  import { ref } from '@vue/reactivity'
   import useSWRV from 'swrv'
   import { onMounted } from 'vue'
   import CurrentWeather from './components/CurrentWeather.vue'
@@ -10,30 +9,12 @@
   const { data, error } = useSWRV(
     () =>
       location.value &&
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${
-        location.value.lat
-      }&lon=${location.value.lon}&appid=${import.meta.env.VITE_API_KEY}`,
+      `/api/today?lat=${location.value.lat}&lon=${location.value.lon}`,
     async key => {
-      return await (await fetch(key)).json()
+      const res = await fetch(key)
+      return await res.json()
     }
   )
-
-  const days = computed(() => {
-    const formattedData = data.value?.list.map((weather: any) => ({
-      ...weather,
-      date: weather.dt_txt.split(' ')[0],
-      time: weather.dt_txt.split(' ')[1],
-    }))
-
-    const groupedData = _.groupBy(formattedData, 'date')
-
-    const sortedData = Object.entries(groupedData).map(([key, value]) => [
-      key,
-      value.sort((a, b) => a.dt - b.dt),
-    ])
-
-    return Object.fromEntries(sortedData)
-  })
 
   onMounted(() => {
     navigator.geolocation.getCurrentPosition(
@@ -51,6 +32,6 @@
 <template>
   <div class="py-12 px-4 space-y-20 max-w-6xl mx-auto">
     <CurrentWeather v-if="location" :lat="location.lat" :lon="location.lon" />
-    <Weathers :weathers="Object.values(days)[0]" :label="'Today\'s Weather'" />
+    <Weathers v-if="data" :weathers="data" :label="'Today\'s Weather'" />
   </div>
 </template>
