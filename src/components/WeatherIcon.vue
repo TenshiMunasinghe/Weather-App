@@ -18,8 +18,8 @@
     BIconSun,
     BIconSunFill,
   } from 'bootstrap-icons-vue'
-  defineProps<{
-    iconId: string
+  const { iconId = '01n' } = defineProps<{
+    iconId: string | undefined
   }>()
 </script>
 

@@ -4,69 +4,70 @@
  */
 
 export interface paths {
-  "/weather": {
+  '/weather': {
     /** Access current weather data for any location on Earth including over 200,000 cities! Current weather is frequently updated based on global models and data from more than 40,000 weather stations. */
-    get: operations["CurrentWeatherData"];
-  };
+    get: operations['CurrentWeatherData']
+  }
 }
 
 export interface components {
   schemas: {
     /** Successful response */
-    "200": {
-      coord?: components["schemas"]["Coord"];
+    '200': {
+      coord?: components['schemas']['Coord']
       /** @description (more info Weather condition codes) */
-      weather?: components["schemas"]["Weather"][];
+      weather?: components['schemas']['Weather'][]
       /**
        * @description Internal parameter
        * @example cmc stations
        */
-      base?: string;
-      main?: components["schemas"]["Main"];
+      base?: string
+      main?: components['schemas']['Main']
       /**
        * @description Visibility, meter
        * @example 16093
        */
-      visibility?: number;
-      wind?: components["schemas"]["Wind"];
-      clouds?: components["schemas"]["Clouds"];
-      rain?: components["schemas"]["Rain"];
-      snow?: components["schemas"]["Snow"];
+      visibility?: number
+      wind?: components['schemas']['Wind']
+      clouds?: components['schemas']['Clouds']
+      rain?: components['schemas']['Rain']
+      snow?: components['schemas']['Snow']
       /**
        * Format: int32
        * @description Time of data calculation, unix, UTC
        * @example 1435658272
        */
-      dt?: number;
-      sys?: components["schemas"]["Sys"];
+      dt?: number
+      dt_txt?: string
+      sys?: components['schemas']['Sys']
       /**
        * Format: int32
        * @description City ID
        * @example 2172797
        */
-      id?: number;
+      id?: number
       /** @example Cairns */
-      name?: string;
+      name?: string
       /**
        * Format: int32
        * @description Internal parameter
        * @example 200
        */
-      cod?: number;
-    };
+      cod?: number
+    }
     /** Coord */
     Coord: {
       /**
        * @description City geo location, longitude
        * @example 145.77
        */
-      lon?: number;
+      lon?: number
       /**
        * @description City geo location, latitude
        * @example -16.92
        */
-      lat?: number;
-    };
+      lat?: number
+    }
     /** Weather */
     Weather: {
       /**
@@ -74,77 +75,77 @@ export interface components {
        * @description Weather condition id
        * @example 803
        */
-      id?: number;
+      id?: number
       /**
        * @description Group of weather parameters (Rain, Snow, Extreme etc.)
        * @example Clouds
        */
-      main?: string;
+      main?: string
       /**
        * @description Weather condition within the group
        * @example broken clouds
        */
-      description?: string;
+      description?: string
       /**
        * @description Weather icon id
        * @example 04n
        */
-      icon?: string;
-    };
+      icon?: string
+    }
     /** Main */
     Main: {
       /**
        * @description Temperature. Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
        * @example 293.25
        */
-      temp?: number;
+      temp?: number
       /**
        * Format: int32
        * @description Atmospheric pressure (on the sea level, if there is no sea_level or grnd_level data), hPa
        * @example 1019
        */
-      pressure?: number;
+      pressure?: number
       /**
        * Format: int32
        * @description Humidity, %
        * @example 83
        */
-      humidity?: number;
+      humidity?: number
       /**
        * @description Minimum temperature at the moment. This is deviation from current temp that is possible for large cities and megalopolises geographically expanded (use these parameter optionally). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
        * @example 289.82
        */
-      temp_min?: number;
+      temp_min?: number
       /**
        * @description Maximum temperature at the moment. This is deviation from current temp that is possible for large cities and megalopolises geographically expanded (use these parameter optionally). Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
        * @example 295.37
        */
-      temp_max?: number;
+      temp_max?: number
       /**
        * @description Atmospheric pressure on the sea level, hPa
        * @example 984
        */
-      sea_level?: number;
+      sea_level?: number
       /**
        * @description Atmospheric pressure on the ground level, hPa
        * @example 990
        */
-      grnd_level?: number;
-    };
+      grnd_level?: number
+    }
     /** Wind */
     Wind: {
       /**
        * @description Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour.
        * @example 5.1
        */
-      speed?: number;
+      speed?: number
       /**
        * Format: int32
        * @description Wind direction, degrees (meteorological)
        * @example 150
        */
-      deg?: number;
-    };
+      deg?: number
+    }
     /** Clouds */
     Clouds: {
       /**
@@ -152,8 +153,8 @@ export interface components {
        * @description Cloudiness, %
        * @example 75
        */
-      all?: number;
-    };
+      all?: number
+    }
     /** Rain */
     Rain: {
       /**
@@ -161,16 +162,16 @@ export interface components {
        * @description Rain volume for the last 3 hours
        * @example 3
        */
-      "3h"?: number;
-    };
+      '3h'?: number
+    }
     /** Snow */
     Snow: {
       /**
        * @description Snow volume for the last 3 hours
        * @example 6
        */
-      "3h"?: number;
-    };
+      '3h'?: number
+    }
     /** Sys */
     Sys: {
       /**
@@ -178,88 +179,37 @@ export interface components {
        * @description Internal parameter
        * @example 1
        */
-      type?: number;
+      type?: number
       /**
        * Format: int32
        * @description Internal parameter
        * @example 8166
        */
-      id?: number;
+      id?: number
       /**
        * @description Internal parameter
        * @example 0.0166
        */
-      message?: number;
+      message?: number
       /**
        * @description Country code (GB, JP etc.)
        * @example AU
        */
-      country?: string;
+      country?: string
       /**
        * Format: int32
        * @description Sunrise time, unix, UTC
        * @example 1435610796
        */
-      sunrise?: number;
+      sunrise?: number
       /**
        * Format: int32
        * @description Sunset time, unix, UTC
        * @example 1435650870
        */
-      sunset?: number;
-    };
-  };
-  parameters: {
-    /** @description **City name**. *Example: London*. You can call by city name, or by city name and country code. The API responds with a list of results that match a searching word. For the query value, type the city name and optionally the country code divided by comma; use ISO 3166 country codes. */
-    q: string;
-    /** @description **City ID**. *Example: `2172797`*. You can call by city ID. API responds with exact result. The List of city IDs can be downloaded [here](http://bulk.openweathermap.org/sample/). You can include multiple cities in parameter &mdash; just separate them by commas. The limit of locations is 20. *Note: A single ID counts as a one API call. So, if you have city IDs. it's treated as 3 API calls.* */
-    id: string;
-    /** @description **Latitude**. *Example: 35*. The latitude cordinate of the location of your interest. Must use with `lon`. */
-    lat: string;
-    /** @description **Longitude**. *Example: 139*. Longitude cordinate of the location of your interest. Must use with `lat`. */
-    lon: string;
-    /** @description **Zip code**. Search by zip code. *Example: 95050,us*. Please note if country is not specified then the search works for USA as a default. */
-    zip: string;
-    /** @description **Units**. *Example: imperial*. Possible values: `standard`, `metric`, and `imperial`. When you do not use units parameter, format is `standard` by default. */
-    units: "standard" | "metric" | "imperial";
-    /** @description **Language**. *Example: en*. You can use lang parameter to get the output in your language. We support the following languages that you can use with the corresponded lang values: Arabic - `ar`, Bulgarian - `bg`, Catalan - `ca`, Czech - `cz`, German - `de`, Greek - `el`, English - `en`, Persian (Farsi) - `fa`, Finnish - `fi`, French - `fr`, Galician - `gl`, Croatian - `hr`, Hungarian - `hu`, Italian - `it`, Japanese - `ja`, Korean - `kr`, Latvian - `la`, Lithuanian - `lt`, Macedonian - `mk`, Dutch - `nl`, Polish - `pl`, Portuguese - `pt`, Romanian - `ro`, Russian - `ru`, Swedish - `se`, Slovak - `sk`, Slovenian - `sl`, Spanish - `es`, Turkish - `tr`, Ukrainian - `ua`, Vietnamese - `vi`, Chinese Simplified - `zh_cn`, Chinese Traditional - `zh_tw`. */
-    lang:
-      | "ar"
-      | "bg"
-      | "ca"
-      | "cz"
-      | "de"
-      | "el"
-      | "en"
-      | "fa"
-      | "fi"
-      | "fr"
-      | "gl"
-      | "hr"
-      | "hu"
-      | "it"
-      | "ja"
-      | "kr"
-      | "la"
-      | "lt"
-      | "mk"
-      | "nl"
-      | "pl"
-      | "pt"
-      | "ro"
-      | "ru"
-      | "se"
-      | "sk"
-      | "sl"
-      | "es"
-      | "tr"
-      | "ua"
-      | "vi"
-      | "zh_cn"
-      | "zh_tw";
-    /** @description **Mode**. *Example: html*. Determines format of response. Possible values are `xml` and `html`. If mode parameter is empty the format is `json` by default. */
-    mode: "json" | "xml" | "html";
-  };
+      sunset?: number
+    }
+  }
 }
 
 export interface operations {
@@ -268,71 +218,71 @@ export interface operations {
     parameters: {
       query: {
         /** **City name**. *Example: London*. You can call by city name, or by city name and country code. The API responds with a list of results that match a searching word. For the query value, type the city name and optionally the country code divided by comma; use ISO 3166 country codes. */
-        q?: string;
+        q?: string
         /** **City ID**. *Example: `2172797`*. You can call by city ID. API responds with exact result. The List of city IDs can be downloaded [here](http://bulk.openweathermap.org/sample/). You can include multiple cities in parameter &mdash; just separate them by commas. The limit of locations is 20. *Note: A single ID counts as a one API call. So, if you have city IDs. it's treated as 3 API calls.* */
-        id?: string;
+        id?: string
         /** **Latitude**. *Example: 35*. The latitude cordinate of the location of your interest. Must use with `lon`. */
-        lat?: string;
+        lat?: string
         /** **Longitude**. *Example: 139*. Longitude cordinate of the location of your interest. Must use with `lat`. */
-        lon?: string;
+        lon?: string
         /** **Zip code**. Search by zip code. *Example: 95050,us*. Please note if country is not specified then the search works for USA as a default. */
-        zip?: string;
-        /** **Units**. *Example: imperial*. Possible values: `standard`, `metric`, and `imperial`. When you do not use units parameter, format is `standard` by default. */
-        units?: "standard" | "metric" | "imperial";
+        zip?: string
+        /** **Units**. *Example: imperial*. Possible values: `metric`, `imperial`. When you do not use units parameter, format is `standard` by default. */
+        units?: 'standard' | 'metric' | 'imperial'
         /** **Language**. *Example: en*. You can use lang parameter to get the output in your language. We support the following languages that you can use with the corresponded lang values: Arabic - `ar`, Bulgarian - `bg`, Catalan - `ca`, Czech - `cz`, German - `de`, Greek - `el`, English - `en`, Persian (Farsi) - `fa`, Finnish - `fi`, French - `fr`, Galician - `gl`, Croatian - `hr`, Hungarian - `hu`, Italian - `it`, Japanese - `ja`, Korean - `kr`, Latvian - `la`, Lithuanian - `lt`, Macedonian - `mk`, Dutch - `nl`, Polish - `pl`, Portuguese - `pt`, Romanian - `ro`, Russian - `ru`, Swedish - `se`, Slovak - `sk`, Slovenian - `sl`, Spanish - `es`, Turkish - `tr`, Ukrainian - `ua`, Vietnamese - `vi`, Chinese Simplified - `zh_cn`, Chinese Traditional - `zh_tw`. */
         lang?:
-          | "ar"
-          | "bg"
-          | "ca"
-          | "cz"
-          | "de"
-          | "el"
-          | "en"
-          | "fa"
-          | "fi"
-          | "fr"
-          | "gl"
-          | "hr"
-          | "hu"
-          | "it"
-          | "ja"
-          | "kr"
-          | "la"
-          | "lt"
-          | "mk"
-          | "nl"
-          | "pl"
-          | "pt"
-          | "ro"
-          | "ru"
-          | "se"
-          | "sk"
-          | "sl"
-          | "es"
-          | "tr"
-          | "ua"
-          | "vi"
-          | "zh_cn"
-          | "zh_tw";
+          | 'ar'
+          | 'bg'
+          | 'ca'
+          | 'cz'
+          | 'de'
+          | 'el'
+          | 'en'
+          | 'fa'
+          | 'fi'
+          | 'fr'
+          | 'gl'
+          | 'hr'
+          | 'hu'
+          | 'it'
+          | 'ja'
+          | 'kr'
+          | 'la'
+          | 'lt'
+          | 'mk'
+          | 'nl'
+          | 'pl'
+          | 'pt'
+          | 'ro'
+          | 'ru'
+          | 'se'
+          | 'sk'
+          | 'sl'
+          | 'es'
+          | 'tr'
+          | 'ua'
+          | 'vi'
+          | 'zh_cn'
+          | 'zh_tw'
         /** **Mode**. *Example: html*. Determines format of response. Possible values are `xml` and `html`. If mode parameter is empty the format is `json` by default. */
-        mode?: "json" | "xml" | "html";
-      };
-    };
+        Mode?: 'json' | 'xml' | 'html'
+      }
+    }
     responses: {
       /** Successful response */
       200: {
         content: {
-          "application/json": components["schemas"]["200"];
-        };
-      };
+          'application/json': components['schemas']['200']
+        }
+      }
       /** Not found response */
       404: {
         content: {
-          "text/plain": string;
-        };
-      };
-    };
-  };
+          'text/plain': string
+        }
+      }
+    }
+  }
 }
 
 export interface external {}

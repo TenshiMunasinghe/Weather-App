@@ -47,7 +47,6 @@ app.get('/today', async (req, res) => {
     const formattedData = response.data.list.map(weather => ({
       ...weather,
       date: weather.dt_txt.split(' ')[0],
-      time: weather.dt_txt.split(' ')[1],
     }))
 
     const groupedData = _.groupBy(formattedData, 'date')
@@ -57,6 +56,7 @@ app.get('/today', async (req, res) => {
     )
 
     res.json(sortedData[0])
+    console.log(sortedData[0])
   } catch (e) {
     console.error(e)
     res.json(e)

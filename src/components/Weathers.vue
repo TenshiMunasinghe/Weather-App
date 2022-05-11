@@ -1,7 +1,8 @@
 <script setup lang="ts">
+  import type { components } from '../schema'
   import Weather from './Weather.vue'
   defineProps<{
-    weathers: any
+    weathers: components['schemas']['200'][]
     label: string
   }>()
 </script>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { computed } from '@vue/reactivity'
   import useSWRV from 'swrv'
+  import type { components } from '../schema'
   import { getTime } from '../utils/getTime'
   import Info from './Info.vue'
   import WeatherIcon from './WeatherIcon.vue'
@@ -33,7 +34,7 @@
   const date = new Date()
 
   const { lat, lon } = defineProps<{ lat: number; lon: number }>()
-  const { data } = useSWRV(
+  const { data } = useSWRV<components['schemas']['200']>(
     () => `/api/current?lat=${lat}&lon=${lon}`,
     async key => {
       const res = await fetch(key)
@@ -41,7 +42,7 @@
     }
   )
 
-  const weather = computed(() => data.value.weather[0])
+  const weather = computed(() => data.value?.weather?.[0])
 </script>
 
 <template>
@@ -55,6 +56,7 @@
     </header>
     <div class="grid md:grid-cols-2 gap-6 items-center">
       <div
+        v-if="weather"
         class="grid grid-cols-2 gap-x-6 justify-items-center border-b-2 md:border-b-0 md:border-r-2 md:pb-0 md:pr-6 border-zinc-200/20 pb-6"
       >
         <WeatherIcon class="w-full h-full mr-auto" :icon-id="weather.icon" />

@@ -4,14 +4,16 @@
   import { onMounted } from 'vue'
   import CurrentWeather from './components/CurrentWeather.vue'
   import Weathers from './components/Weathers.vue'
+  import type { components } from './schema'
 
   const location = ref<{ lat: number; lon: number } | null>(null)
-  const { data, error } = useSWRV(
+  const { data, error } = useSWRV<components['schemas']['200'][]>(
     () =>
       location.value &&
       `/api/today?lat=${location.value.lat}&lon=${location.value.lon}`,
     async key => {
       const res = await fetch(key)
+
       return await res.json()
     }
   )
