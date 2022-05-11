@@ -11,14 +11,21 @@ app.use(express.json())
 
 app.listen(8000, () => console.log('working'))
 
+const handleError = res => {
+  res.status(400).send('Provide latitude and longitude as query params.')
+}
+
 app.get('/current', async (req, res) => {
   const { lat, lon } = req.query
+
+  if (!lat || !lon) {
+    handleError(res)
+  }
 
   try {
     const response = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
     )
-    console.log('yo')
     res.json(response.data)
   } catch (e) {
     console.error(e)
@@ -29,9 +36,13 @@ app.get('/current', async (req, res) => {
 app.get('/today', async (req, res) => {
   const { lat, lon } = req.query
 
+  if (!lat || !lon) {
+    handleError(res)
+  }
+
   try {
     const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.API_KEY}`
     )
 
     const formattedData = response.data.list.map(weather => ({
