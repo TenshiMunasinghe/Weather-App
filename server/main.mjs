@@ -15,6 +15,9 @@ const handleError = res => {
   res.status(400).send('Provide latitude and longitude as query params.')
 }
 
+const url = (route, lat, lon) =>
+  `https://api.openweathermap.org/data/2.5/${route}?units=metric&lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
+
 app.get('/current', async (req, res) => {
   const { lat, lon } = req.query
 
@@ -23,9 +26,7 @@ app.get('/current', async (req, res) => {
   }
 
   try {
-    const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
-    )
+    const response = await axios.get(url('weather', lat, lon))
     res.json(response.data)
   } catch (e) {
     console.error(e)
@@ -41,9 +42,7 @@ app.get('/today', async (req, res) => {
   }
 
   try {
-    const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.API_KEY}`
-    )
+    const response = await axios.get(url('forecast', lat, lon))
 
     const formattedData = response.data.list.map(weather => ({
       ...weather,

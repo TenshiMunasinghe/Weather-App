@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { kelvinsToCelsius } from '../utils/kelvinsToCelsius'
   import WeatherIcon from './WeatherIcon.vue'
   defineProps<{ weather: any }>()
 </script>
@@ -11,7 +10,7 @@
     <h4>{{ weather.time.substr(0, 5) }}</h4>
     <WeatherIcon class="w-9 h-9" :icon-id="weather.weather[0].icon" />
     <div v-if="typeof weather.main.temp === 'number'">
-      {{ kelvinsToCelsius(weather.main.temp) }}&#x2103;
+      {{ Math.round(weather.main.temp) }}&#x2103;
     </div>
   </li>
 </template>
