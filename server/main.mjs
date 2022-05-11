@@ -62,3 +62,21 @@ app.get('/today', async (req, res) => {
     res.json(e)
   }
 })
+
+app.get('/week', async (req, res) => {
+  const { lat, lon } = req.query
+
+  if (!lat || !lon) {
+    handleError(res)
+  }
+
+  try {
+    const response = await axios.get(
+      url('onecall', lat, lon) + '&exclude=current,minutely,hourly,alerts'
+    )
+    res.json(response.data)
+  } catch (e) {
+    console.error(e)
+    res.json(e)
+  }
+})
