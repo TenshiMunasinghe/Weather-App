@@ -73,7 +73,8 @@ app.get('/week', async (req, res) => {
     const response = await axios.get(
       url('onecall', lat, lon) + '&exclude=current,minutely,hourly,alerts'
     )
-    req.json(response.data)
+    const [today, ...daily] = response.data.daily
+    res.json({ ...response.data, daily })
   } catch (e) {
     console.error(e)
     res.json(e)
