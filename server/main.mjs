@@ -56,7 +56,6 @@ app.get('/today', async (req, res) => {
     )
 
     res.json(sortedData[0])
-    console.log(sortedData[0])
   } catch (e) {
     console.error(e)
     res.json(e)
@@ -74,7 +73,7 @@ app.get('/week', async (req, res) => {
     const response = await axios.get(
       url('onecall', lat, lon) + '&exclude=current,minutely,hourly,alerts'
     )
-    res.json(response.data)
+    req.json(response.data)
   } catch (e) {
     console.error(e)
     res.json(e)
