@@ -12,7 +12,7 @@
 </script>
 
 <template>
-  <div class="space-y-2">
+  <div>
     <div class="text-xl" :class="className[align]">{{ main }}</div>
     <div class="font-extralight capitalize" :class="className[align]">
       {{ sub }}
