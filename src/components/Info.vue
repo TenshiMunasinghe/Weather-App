@@ -14,7 +14,10 @@
 <template>
   <div>
     <div class="text-xl" :class="className[align]">{{ main }}</div>
-    <div class="font-extralight capitalize" :class="className[align]">
+    <div
+      class="font-extralight text-zinc-300 capitalize"
+      :class="className[align]"
+    >
       {{ sub }}
     </div>
   </div>
