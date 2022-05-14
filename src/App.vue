@@ -36,6 +36,9 @@
   <div class="py-12 px-4 space-y-20 max-w-6xl mx-auto">
     <CurrentWeather v-if="location" :lat="location.lat" :lon="location.lon" />
     <Weathers v-if="data" :weathers="data" :label="'Today\'s Weather'" />
-    <Days v-if="location" :lat="location.lat" :lon="location.lon" />
+    <div class="space-y-3 text-lg">
+      <h3>Week's Weather</h3>
+      <Days v-if="location" :lat="location.lat" :lon="location.lon" />
+    </div>
   </div>
 </template>
