@@ -3,6 +3,7 @@
   import useSWRV from 'swrv'
   import { onMounted } from 'vue'
   import CurrentWeather from './components/CurrentWeather.vue'
+  import Days from './components/Days.vue'
   import Weathers from './components/Weathers.vue'
   import type { components } from './schema'
 
@@ -35,5 +36,6 @@
   <div class="py-12 px-4 space-y-20 max-w-6xl mx-auto">
     <CurrentWeather v-if="location" :lat="location.lat" :lon="location.lon" />
     <Weathers v-if="data" :weathers="data" :label="'Today\'s Weather'" />
+    <Days v-if="location" :lat="location.lat" :lon="location.lon" />
   </div>
 </template>
