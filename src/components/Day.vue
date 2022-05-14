@@ -12,7 +12,7 @@
 <template>
   <div
     v-if="day"
-    class="grid grid-cols-3 grid-rows-2 gap-3 bg-blue-900/40 py-4"
+    class="grid grid-cols-3 gap-3 bg-blue-900/40 py-4 md:grid-cols-6"
   >
     <Info
       v-if="date"
