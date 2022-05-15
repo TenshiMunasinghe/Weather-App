@@ -1,5 +1,7 @@
 <script setup lang="ts">
   import useSWRV from 'swrv'
+  import { toRef } from 'vue'
+  import type { Location } from '../App.vue'
   import Day from './Day.vue'
   export interface Daily {
     clouds: number
@@ -29,9 +31,10 @@
     wind_speed: number
   }
 
-  const { lat, lon } = defineProps<{ lat: number; lon: number }>()
+  const props = defineProps<{ location: Location }>()
+  const location = toRef(props, 'location')
   const { data } = useSWRV<{ daily: Daily[] }>(
-    `/api/week?lat=${lat}&lon=${lon}`
+    () => `/api/week?lat=${location.value.lat}&lon=${location.value.lon}`
   )
 </script>
 

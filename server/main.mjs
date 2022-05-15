@@ -36,6 +36,7 @@ app.get('/current', async (req, res) => {
 
 app.get('/today', async (req, res) => {
   const { lat, lon } = req.query
+  console.log(req)
 
   if (!lat || !lon) {
     handleError(res)
@@ -75,6 +76,24 @@ app.get('/week', async (req, res) => {
     )
     const [today, ...daily] = response.data.daily
     res.json({ ...response.data, daily })
+  } catch (e) {
+    console.error(e)
+    res.json(e)
+  }
+})
+
+app.get('/location', async (req, res) => {
+  const { name } = req.query
+  if (!name) {
+    res.status(400).send('Provide location name')
+    res.end()
+  }
+
+  try {
+    const response = await axios.get(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${name}&appid=${process.env.API_KEY}`
+    )
+    res.json(response.data)
   } catch (e) {
     console.error(e)
     res.json(e)

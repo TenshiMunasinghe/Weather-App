@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import { computed } from '@vue/reactivity'
+  import { computed, toRef } from '@vue/reactivity'
   import useSWRV from 'swrv'
+  import type { Location } from '../App.vue'
   import type { components } from '../schema'
   import { getTime } from '../utils/getTime'
   import Info from './Info.vue'
@@ -34,9 +35,10 @@
 
   const date = new Date()
 
-  const { lat, lon } = defineProps<{ lat: number; lon: number }>()
+  const props = defineProps<{ location: Location }>()
+  const location = toRef(props, 'location')
   const { data } = useSWRV<components['schemas']['200']>(
-    () => `/api/current?lat=${lat}&lon=${lon}`,
+    () => `/api/current?lat=${location.value.lat}&lon=${location.value.lon}`,
     async key => {
       const res = await fetch(key)
       return await res.json()

@@ -18,9 +18,11 @@
     "swrv": "^1.0.0-beta.8",
     "vue": "^3.2.31",
     "vue-awesome": "^4.5.0",
+    "vue-query": "^1.23.0",
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.1",
     "@types/node": "^16.11.26",
     "@vitejs/plugin-vue": "^2.3.1",
     "@vue/tsconfig": "^0.1.3",

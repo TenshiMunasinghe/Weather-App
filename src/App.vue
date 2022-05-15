@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { ref } from '@vue/reactivity'
+  import { computed, ref } from '@vue/reactivity'
+  import { BIconSearch } from 'bootstrap-icons-vue'
   import useSWRV from 'swrv'
   import { onMounted } from 'vue'
   import CurrentWeather from './components/CurrentWeather.vue'
@@ -8,38 +9,78 @@
   import Weathers from './components/Weathers.vue'
   import type { components } from './schema'
 
-  const location = ref<{ lat: number; lon: number } | null>(null)
-  const { data } = useSWRV<components['schemas']['200'][]>(
-    () =>
-      location.value &&
-      `/api/today?lat=${location.value.lat}&lon=${location.value.lon}`,
+  export interface Location {
+    lat: number
+    lon: number
+  }
+
+  const locationName = ref(null)
+
+  const defaultLocation = ref<Location>()
+
+  const { data: location } = useSWRV<Location>(
+    () => locationName.value && `/api/location?name=${locationName.value}`,
     async key => {
       const res = await fetch(key)
+      const json = await res.json()
+      const { lat, lon } = json[0]
+      return { lat, lon }
+    }
+  )
 
-      return await res.json()
+  const activeLocation = computed(() =>
+    locationName.value ? location.value : defaultLocation.value
+  )
+
+  const { data: weather } = useSWRV<components['schemas']['200'][]>(
+    () =>
+      activeLocation.value
+        ? `/api/today?lat=${activeLocation.value.lat}&lon=${activeLocation.value.lon}`
+        : null,
+    async key => {
+      const res = await fetch(key)
+      const json = await res.json()
+
+      return json
     }
   )
 
   onMounted(() => {
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
-        location.value = { lat: coords.latitude, lon: coords.longitude }
+        defaultLocation.value = { lat: coords.latitude, lon: coords.longitude }
       },
       error => {
         console.error(error.message)
-        location.value = { lat: 35.2, lon: 136.9 }
+        defaultLocation.value = { lat: 35.2, lon: 136.9 }
       }
     )
   })
+
+  const onSubmit = async (e: any) => {
+    locationName.value = e.target.elements.locationName.value
+  }
 </script>
 
 <template>
-  <div class="py-12 px-4 space-y-20 max-w-5xl mx-auto">
-    <CurrentWeather v-if="location" :lat="location.lat" :lon="location.lon" />
-    <Weathers :weathers="data" :label="'Today\'s Weather'" />
+  <div class="py-12 px-4 space-y-20 max-w-5xl mx-auto flex flex-col">
+    <form
+      @submit.prevent="onSubmit($event)"
+      class="inline-flex mx-auto max-w-full rounded overflow-hidden group focus-within:ring-2 focus-within:ring-blue-500"
+    >
+      <input
+        name="locationName"
+        class="bg-blue-600 p-3 group-focus-within:outline-none w-96"
+      />
+      <button type="submit" class="bg-blue-700 p-3 px-4 hover:bg-blue-500">
+        <BIconSearch />
+      </button>
+    </form>
+    <CurrentWeather v-if="activeLocation" :location="activeLocation" />
+    <Weathers :weathers="weather" :label="'Today\'s Weather'" />
     <div class="space-y-3 text-lg">
       <h3>Week's Weather</h3>
-      <Days v-if="location" :lat="location.lat" :lon="location.lon" />
+      <Days v-if="activeLocation" :location="activeLocation" />
       <LoadingSpinner v-else />
     </div>
   </div>
