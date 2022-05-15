@@ -32,16 +32,21 @@
     wind_speed: number
   }
 
-  const props = defineProps<{ location: Location }>()
+  const props = defineProps<{ location?: Location }>()
   const location = toRef(props, 'location')
-  const { data, isValidating } = useSWRV<{ daily: Daily[] }>(
-    () => `/api/week?lat=${location.value.lat}&lon=${location.value.lon}`
+  const { data, isValidating } = useSWRV<{ daily: Daily[] }>(() =>
+    location.value
+      ? `/api/week?lat=${location.value.lat}&lon=${location.value.lon}`
+      : null
   )
 </script>
 
 <template>
-  <div v-if="data" class="flex flex-col space-y-6 relative min-h-[20rem]">
-    <Day v-for="day of data?.daily" :day="day" />
+  <div
+    class="flex flex-col space-y-6 relative"
+    :class="{ 'min-h-[20rem]': !data && isValidating }"
+  >
+    <Day v-if="data" v-for="day of data?.daily" :day="day" />
     <LoadingSpinner v-if="isValidating" />
   </div>
 </template>

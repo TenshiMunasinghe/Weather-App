@@ -52,7 +52,10 @@
 </script>
 
 <template>
-  <section class="space-y-8 relative min-h-[20rem]">
+  <section
+    class="space-y-8 relative"
+    :class="{ 'min-h-[20rem]': !data && isValidating }"
+  >
     <template v-if="data">
       <header>
         <h1 class="text-4xl">{{ data.name }}, {{ data.sys.country }}</h1>

@@ -6,7 +6,6 @@
   import CurrentWeather from './components/CurrentWeather.vue'
   import Days from './components/Days.vue'
   import Weathers from './components/Weathers.vue'
-  import type { components } from './schema'
 
   export interface Location {
     lat: number
@@ -29,19 +28,6 @@
 
   const activeLocation = computed(() =>
     locationName.value ? location.value : defaultLocation.value
-  )
-
-  const { data: weather } = useSWRV<components['schemas']['200'][]>(
-    () =>
-      activeLocation.value
-        ? `/api/today?lat=${activeLocation.value.lat}&lon=${activeLocation.value.lon}`
-        : null,
-    async key => {
-      const res = await fetch(key)
-      const json = await res.json()
-
-      return json
-    }
   )
 
   onMounted(() => {
@@ -77,10 +63,13 @@
       </button>
     </form>
     <CurrentWeather :location="activeLocation" />
-    <Weathers :weathers="weather" :label="'Today\'s Weather'" />
+    <div class="flex flex-col space-y-3">
+      <h3 class="text-lg">Today's Weather</h3>
+      <Weathers :location="activeLocation" />
+    </div>
     <div class="space-y-3 text-lg">
       <h3>Week's Weather</h3>
-      <Days v-if="activeLocation" :location="activeLocation" />
+      <Days :location="activeLocation" />
     </div>
   </div>
 </template>
