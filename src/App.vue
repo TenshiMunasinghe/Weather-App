@@ -69,8 +69,9 @@
       class="inline-flex mx-auto max-w-full rounded overflow-hidden group focus-within:ring-2 focus-within:ring-blue-500"
     >
       <input
+        placeholder="Search City"
         name="locationName"
-        class="bg-blue-600 p-3 group-focus-within:outline-none w-96"
+        class="bg-blue-600 p-3 group-focus-within:outline-none w-96 placeholder:text-zinc-300 placeholder:text-sm placeholder:font-extralight"
       />
       <button type="submit" class="bg-blue-700 p-3 px-4 hover:bg-blue-500">
         <BIconSearch />
