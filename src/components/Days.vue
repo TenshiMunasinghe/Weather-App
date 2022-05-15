@@ -3,6 +3,7 @@
   import { toRef } from 'vue'
   import type { Location } from '../App.vue'
   import Day from './Day.vue'
+  import LoadingSpinner from './LoadingSpinner.vue'
   export interface Daily {
     clouds: number
     dew_point: number
@@ -33,13 +34,14 @@
 
   const props = defineProps<{ location: Location }>()
   const location = toRef(props, 'location')
-  const { data } = useSWRV<{ daily: Daily[] }>(
+  const { data, isValidating } = useSWRV<{ daily: Daily[] }>(
     () => `/api/week?lat=${location.value.lat}&lon=${location.value.lon}`
   )
 </script>
 
 <template>
-  <div v-if="data" class="flex flex-col space-y-6">
+  <div v-if="data" class="flex flex-col space-y-6 relative min-h-[20rem]">
     <Day v-for="day of data?.daily" :day="day" />
+    <LoadingSpinner v-if="isValidating" />
   </div>
 </template>

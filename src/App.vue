@@ -5,7 +5,6 @@
   import { onMounted } from 'vue'
   import CurrentWeather from './components/CurrentWeather.vue'
   import Days from './components/Days.vue'
-  import LoadingSpinner from './components/LoadingSpinner.vue'
   import Weathers from './components/Weathers.vue'
   import type { components } from './schema'
 
@@ -77,12 +76,11 @@
         <BIconSearch />
       </button>
     </form>
-    <CurrentWeather v-if="activeLocation" :location="activeLocation" />
+    <CurrentWeather :location="activeLocation" />
     <Weathers :weathers="weather" :label="'Today\'s Weather'" />
     <div class="space-y-3 text-lg">
       <h3>Week's Weather</h3>
       <Days v-if="activeLocation" :location="activeLocation" />
-      <LoadingSpinner v-else />
     </div>
   </div>
 </template>

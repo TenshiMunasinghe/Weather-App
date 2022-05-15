@@ -35,10 +35,13 @@
 
   const date = new Date()
 
-  const props = defineProps<{ location: Location }>()
+  const props = defineProps<{ location?: Location }>()
   const location = toRef(props, 'location')
-  const { data } = useSWRV<components['schemas']['200']>(
-    () => `/api/current?lat=${location.value.lat}&lon=${location.value.lon}`,
+  const { data, isValidating } = useSWRV<components['schemas']['200']>(
+    () =>
+      location.value
+        ? `/api/current?lat=${location.value.lat}&lon=${location.value.lon}`
+        : null,
     async key => {
       const res = await fetch(key)
       return await res.json()
@@ -49,36 +52,44 @@
 </script>
 
 <template>
-  <section class="space-y-8" v-if="data">
-    <header>
-      <h1 class="text-4xl">{{ data.name }}, {{ data.sys.country }}</h1>
-      <div>
-        {{ WEEKDAY[date.getDay()] }} {{ date.getDate() }}
-        {{ MONTHS[date.getMonth()] }}
-      </div>
-    </header>
-    <div class="grid md:grid-cols-2 gap-6 items-center">
-      <div
-        v-if="weather"
-        class="grid grid-cols-2 gap-x-6 justify-items-center border-b-2 md:border-b-0 md:border-r-2 md:pb-0 md:pr-6 border-zinc-200/20 pb-6"
-      >
-        <WeatherIcon class="w-full h-full mr-auto" :icon-id="weather.icon" />
-        <div class="space-y-4 w-min h-full">
-          <div class="w-min text-[length:min(18vw,5rem)]">
-            {{ parseInt(data.main.temp) }}&#x2103;
+  <section class="space-y-8 relative min-h-[20rem]">
+    <template v-if="data">
+      <header>
+        <h1 class="text-4xl">{{ data.name }}, {{ data.sys.country }}</h1>
+        <div>
+          {{ WEEKDAY[date.getDay()] }} {{ date.getDate() }}
+          {{ MONTHS[date.getMonth()] }}
+        </div>
+      </header>
+      <div class="grid md:grid-cols-2 gap-6 items-center">
+        <div
+          v-if="weather"
+          class="grid grid-cols-2 gap-x-6 justify-items-center border-b-2 md:border-b-0 md:border-r-2 md:pb-0 md:pr-6 border-zinc-200/20 pb-6"
+        >
+          <WeatherIcon class="w-full h-full mr-auto" :icon-id="weather.icon" />
+          <div class="space-y-4 w-min h-full">
+            <div class="w-min text-[length:min(18vw,5rem)]">
+              {{ parseInt(data.main.temp) }}&#x2103;
+            </div>
+            <div class="text-lg capitalize">{{ weather.description }}</div>
           </div>
-          <div class="text-lg capitalize">{{ weather.description }}</div>
+        </div>
+        <div class="grid gap-6 grid-cols-3 grid-rows-2">
+          <Info
+            :main="`${parseInt(data.main.temp_max)}&#x2103;`"
+            :sub="'high'"
+          />
+          <Info :main="`${data.wind.speed}mph`" :sub="'wind'" />
+          <Info :main="getTime(data.sys.sunrise)" :sub="'sunrise'" />
+          <Info
+            :main="`${parseInt(data.main.temp_min)}&#x2103;`"
+            :sub="'low'"
+          />
+          <Info :main="`${data.main.humidity}%`" :sub="'humidity'" />
+          <Info :main="getTime(data.sys.sunset)" :sub="'sunset'" />
         </div>
       </div>
-      <div class="grid gap-6 grid-cols-3 grid-rows-2">
-        <Info :main="`${parseInt(data.main.temp_max)}&#x2103;`" :sub="'high'" />
-        <Info :main="`${data.wind.speed}mph`" :sub="'wind'" />
-        <Info :main="getTime(data.sys.sunrise)" :sub="'sunrise'" />
-        <Info :main="`${parseInt(data.main.temp_min)}&#x2103;`" :sub="'low'" />
-        <Info :main="`${data.main.humidity}%`" :sub="'humidity'" />
-        <Info :main="getTime(data.sys.sunset)" :sub="'sunset'" />
-      </div>
-    </div>
+    </template>
+    <LoadingSpinner v-if="isValidating" />
   </section>
-  <LoadingSpinner v-else />
 </template>
