@@ -4,6 +4,7 @@
   import type { components } from '../schema'
   import { getTime } from '../utils/getTime'
   import Info from './Info.vue'
+  import LoadingSpinner from './LoadingSpinner.vue'
   import WeatherIcon from './WeatherIcon.vue'
 
   const WEEKDAY = [
@@ -77,5 +78,5 @@
       </div>
     </div>
   </section>
-  <div v-else>Loading...</div>
+  <LoadingSpinner v-else />
 </template>
