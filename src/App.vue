@@ -34,7 +34,7 @@
 </script>
 
 <template>
-  <div class="py-12 px-4 space-y-20 max-w-6xl mx-auto">
+  <div class="py-12 px-4 space-y-20 max-w-5xl mx-auto">
     <CurrentWeather v-if="location" :lat="location.lat" :lon="location.lon" />
     <Weathers :weathers="data" :label="'Today\'s Weather'" />
     <div class="space-y-3 text-lg">
