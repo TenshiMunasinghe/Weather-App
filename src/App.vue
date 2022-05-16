@@ -5,6 +5,7 @@
   import { onMounted } from 'vue'
   import CurrentWeather from './components/CurrentWeather.vue'
   import Days from './components/Days.vue'
+  import Section from './components/Section.vue'
   import Weathers from './components/Weathers.vue'
 
   export interface Location {
@@ -63,13 +64,11 @@
       </button>
     </form>
     <CurrentWeather :location="activeLocation" />
-    <div class="flex flex-col space-y-3">
-      <h3 class="text-lg">Today's Weather</h3>
+    <Section heading="Todays's Weather">
       <Weathers :location="activeLocation" />
-    </div>
-    <div class="space-y-3 text-lg">
-      <h3>Week's Weather</h3>
+    </Section>
+    <Section heading="Week's Weather">
       <Days :location="activeLocation" />
-    </div>
+    </Section>
   </div>
 </template>
