@@ -58,7 +58,7 @@
   >
     <template v-if="data">
       <header>
-        <h1 class="text-4xl">{{ data.name }}, {{ data.sys.country }}</h1>
+        <h1 class="text-4xl">{{ data.name }}, {{ data.sys?.country }}</h1>
         <div>
           {{ WEEKDAY[date.getDay()] }} {{ date.getDate() }}
           {{ MONTHS[date.getMonth()] }}
@@ -71,25 +71,46 @@
         >
           <WeatherIcon class="w-full h-full mr-auto" :icon-id="weather.icon" />
           <div class="space-y-4 w-min h-full">
-            <div class="w-min text-[length:min(18vw,5rem)]">
-              {{ parseInt(data.main.temp) }}&#x2103;
+            <div
+              v-if="!!data.main?.temp"
+              class="w-min text-[length:min(18vw,5rem)]"
+            >
+              {{ Math.round(data.main.temp) }}&#x2103;
             </div>
             <div class="text-lg capitalize">{{ weather.description }}</div>
           </div>
         </div>
         <div class="grid gap-6 grid-cols-3 grid-rows-2">
           <Info
-            :main="`${parseInt(data.main.temp_max)}&#x2103;`"
+            v-if="!!data.main?.temp_max"
+            :main="`${Math.round(data.main.temp_max)}&#x2103;`"
             :sub="'high'"
           />
-          <Info :main="`${data.wind.speed}mph`" :sub="'wind'" />
-          <Info :main="getTime(data.sys.sunrise)" :sub="'sunrise'" />
           <Info
-            :main="`${parseInt(data.main.temp_min)}&#x2103;`"
+            v-if="!!data.wind?.speed"
+            :main="`${data.wind.speed}mph`"
+            :sub="'wind'"
+          />
+          <Info
+            v-if="!!data.sys?.sunrise"
+            :main="getTime(data.sys.sunrise)"
+            :sub="'sunrise'"
+          />
+          <Info
+            v-if="!!data.main?.temp_min"
+            :main="`${Math.round(data.main.temp_min)}&#x2103;`"
             :sub="'low'"
           />
-          <Info :main="`${data.main.humidity}%`" :sub="'humidity'" />
-          <Info :main="getTime(data.sys.sunset)" :sub="'sunset'" />
+          <Info
+            v-if="!!data.main?.humidity"
+            :main="`${data.main.humidity}%`"
+            :sub="'humidity'"
+          />
+          <Info
+            v-if="!!data.sys?.sunset"
+            :main="getTime(data.sys.sunset)"
+            :sub="'sunset'"
+          />
         </div>
       </div>
     </template>
