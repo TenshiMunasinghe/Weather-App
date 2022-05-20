@@ -9,7 +9,8 @@
     "dev": "NODE_ENV='development' npx nodemon dist/main.js",
     "build-client": "cd client && yarn build",
     "install-client": "cd client && yarn",
-    "build": "yarn && yarn install-client && yarn build-client"
+    "build": "yarn && yarn install-client",
+    "heroku-postbuild": "yarn build-client"
   },
   "author": "",
   "license": "ISC",
