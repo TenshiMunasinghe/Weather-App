@@ -9,7 +9,7 @@ const app = express()
 
 app.use(express.json())
 
-app.use(express.static('dist'))
+app.use(express.static('../dist'))
 
 app.listen(8000)
 
@@ -20,7 +20,7 @@ const handleError = res => {
 const url = (route, lat, lon) =>
   `https://api.openweathermap.org/data/2.5/${route}?units=metric&lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
 
-app.get('/current', async (req, res) => {
+app.get('/api/current', async (req, res) => {
   const { lat, lon } = req.query
 
   if (!lat || !lon) {
@@ -36,9 +36,8 @@ app.get('/current', async (req, res) => {
   }
 })
 
-app.get('/today', async (req, res) => {
+app.get('/api/today', async (req, res) => {
   const { lat, lon } = req.query
-  console.log(req)
 
   if (!lat || !lon) {
     handleError(res)
@@ -65,7 +64,7 @@ app.get('/today', async (req, res) => {
   }
 })
 
-app.get('/week', async (req, res) => {
+app.get('/api/week', async (req, res) => {
   const { lat, lon } = req.query
 
   if (!lat || !lon) {
@@ -84,7 +83,7 @@ app.get('/week', async (req, res) => {
   }
 })
 
-app.get('/location', async (req, res) => {
+app.get('/api/location', async (req, res) => {
   const { name } = req.query
   if (!name) {
     res.status(400).send('Provide location name')
@@ -100,4 +99,10 @@ app.get('/location', async (req, res) => {
     console.error(e)
     res.json(e)
   }
+})
+
+app.get('/*', (req, res) => {
+  res.sendFile('index.html', {
+    root: path.join(__dirname, '../dist'),
+  })
 })
