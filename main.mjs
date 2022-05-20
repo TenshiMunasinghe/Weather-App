@@ -11,7 +11,7 @@ app.use(express.json())
 
 app.use(express.static('./client/dist'))
 
-app.listen(8000)
+app.listen(process.env.PORT || 8080)
 
 const handleError = res => {
   res.status(400).send('Provide latitude and longitude as query params.')
@@ -19,6 +19,8 @@ const handleError = res => {
 
 const url = (route, lat, lon) =>
   `https://api.openweathermap.org/data/2.5/${route}?units=metric&lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
+
+app.use('/public', express.static('./client/public'))
 
 app.get('/api/current', async (req, res) => {
   const { lat, lon } = req.query
