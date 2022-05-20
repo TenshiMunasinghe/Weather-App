@@ -9,7 +9,9 @@ const app = express()
 
 app.use(express.json())
 
-app.listen(8000, () => console.log('working'))
+app.use(express.static('dist'))
+
+app.listen(8000)
 
 const handleError = res => {
   res.status(400).send('Provide latitude and longitude as query params.')
