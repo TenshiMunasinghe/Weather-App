@@ -8,7 +8,7 @@
     "dev": "NODE_ENV='development' npx nodemon main.mjs",
     "build-client": "cd client && yarn build",
     "install-client": "cd client && yarn",
-    "build": "yarn install-client && yarn build-client"
+    "build": "yarn && yarn install-client && yarn build-client"
   },
   "author": "",
   "license": "ISC",
