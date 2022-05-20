@@ -11,7 +11,7 @@ app.use(express.json())
 
 app.use(express.static('./client/dist'))
 
-app.listen(process.env.PORT || 8080)
+app.listen(process.env.PORT || 8000)
 
 const handleError = res => {
   res.status(400).send('Provide latitude and longitude as query params.')
@@ -34,7 +34,6 @@ app.get('/api/current', async (req, res) => {
     res.json(response.data)
   } catch (e) {
     console.error(e)
-    res.json(e)
   }
 })
 
@@ -62,7 +61,6 @@ app.get('/api/today', async (req, res) => {
     res.json(sortedData[0])
   } catch (e) {
     console.error(e)
-    res.json(e)
   }
 })
 
@@ -81,7 +79,6 @@ app.get('/api/week', async (req, res) => {
     res.json({ ...response.data, daily })
   } catch (e) {
     console.error(e)
-    res.json(e)
   }
 })
 
@@ -99,7 +96,6 @@ app.get('/api/location', async (req, res) => {
     res.json(response.data)
   } catch (e) {
     console.error(e)
-    res.json(e)
   }
 })
 
