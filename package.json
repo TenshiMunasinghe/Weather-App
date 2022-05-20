@@ -6,9 +6,9 @@
   "scripts": {
     "start": "node main.mjs",
     "dev": "NODE_ENV='development' npx nodemon main.mjs",
-    "build-client": "cd client && yarn build",
+    "build": "cd client && yarn build",
     "install-client": "cd client && yarn",
-    "heroku-postbuild": "yarn install-client && yarn build-client"
+    "heroku-postbuild": "yarn install-client && yarn build"
   },
   "author": "",
   "license": "ISC",
