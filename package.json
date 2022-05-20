@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.mjs"
+    "start": "node main.mjs",
+    "dev": "NODE_ENV='development' npx nodemon dist/main.js",
+    "build-client": "cd client && yarn build",
+    "install-client": "cd client && yarn",
+    "build": "yarn && yarn install-client && yarn build-client"
   },
   "author": "",
   "license": "ISC",
